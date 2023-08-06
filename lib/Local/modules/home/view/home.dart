@@ -48,7 +48,13 @@ class HomePage extends StatelessWidget {
                                 )
                               : NoteBody(
                                   model: controller.notesList[index],
-                                  onTap: () {},
+                                  onTap: () {
+                                    Get.toNamed(AppRoute.editNotes,
+                                        arguments: controller.notesList[index]);
+                                  },
+                                  onDelete: () {
+                                    controller.removeNote(index);
+                                  },
                                 ),
                     )),
                     if (controller.isFetching)

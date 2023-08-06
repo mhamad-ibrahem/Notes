@@ -6,7 +6,7 @@ import '../../Core/Constant/TextStyles.dart';
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     Key? key,
-    required this.icon,
+    this.icon,
     required this.label,
     required this.hint,
     required this.obscure,
@@ -14,13 +14,15 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.inputType,
     this.isChat = false,
-    this.isEmojeVisable = false,
+    this.isEmojiVisible = false,
     @required this.suffixIcon,
     this.onChange,
     this.onTap,
     this.focusNode,
+    this.isMultiLine = false,
+    this.isEnable,
   }) : super(key: key);
-  final IconData icon;
+  final IconData? icon;
   final String label;
   final String hint;
   final bool obscure;
@@ -30,9 +32,11 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final void Function(String)? onChange;
   final bool isChat;
-  final bool isEmojeVisable;
+  final bool isEmojiVisible;
+  final bool isMultiLine;
   final void Function()? onTap;
   final FocusNode? focusNode;
+  final bool? isEnable;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -42,7 +46,8 @@ class CustomTextFormField extends StatelessWidget {
       validator: validator,
       style: textFormStyle(),
       obscureText: obscure,
-      maxLines: 1,
+      enabled: isEnable ?? true,
+      maxLines: isMultiLine ? 4 : 1,
       cursorColor: AppColors.deepGrey,
       keyboardType: inputType,
       decoration: InputDecoration(

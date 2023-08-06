@@ -16,12 +16,12 @@ class BottomPageLogin extends StatelessWidget {
       children: [
         CustomButton(
             buttonBody:
-                controller.loginMythod == 'Email' ? 'Login' : 'Login With Otp',
-            onTap: () {
-              print(controller.loginMythod);
-              controller.loginMythod == 'Email'
-                  ? controller.login()
-                  : controller.otpLogin();
+                controller.loginMethod == 'Email' ? 'Login' : 'Login With Otp',
+            onTap: () async {
+              print(controller.loginMethod);
+              controller.loginMethod == 'Email'
+                  ? await controller.login()
+                  : await controller.otpLogin();
             },
             buttonWidth: AppSize.screenWidth),
         Row(

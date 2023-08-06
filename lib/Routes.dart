@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:notes/Local/modules/add_notes/binding/add_notes_notes.dart';
 import 'package:notes/Local/modules/add_notes/view/add_notes_page.dart';
+import 'package:notes/Local/modules/edit_note/view/edit_note.dart';
 import 'package:notes/Local/modules/login/binding/login_binding.dart';
 import 'package:notes/Local/modules/login/view/login.dart';
 import 'package:notes/Local/modules/main/view/main_page.dart';
@@ -10,13 +11,14 @@ import 'package:notes/Local/modules/register/binding/register_binding.dart';
 import 'package:notes/Local/modules/register/view/register.dart';
 import 'Global/Core/Middleware/Middleware.dart';
 import 'Local/Core/Constant/Routes.dart';
+import 'Local/modules/edit_note/binding/edit_note_binding.dart';
 import 'Local/modules/main/binding/main_binding.dart';
 
 List<GetPage<dynamic>>? routes = [
   GetPage(
       name: AppRoute.register,
       page: () => Register(),
-      // middlewares: [MiddleWare()],
+      middlewares: [MiddleWare()],
       transition: Transition.fade,
       binding: RegisterBinding(),
       transitionDuration: const Duration(milliseconds: 700)),
@@ -45,5 +47,11 @@ List<GetPage<dynamic>>? routes = [
       page: () => AddNotesPage(),
       transition: Transition.fade,
       binding: AddNotesBinding(),
+      transitionDuration: const Duration(milliseconds: 700)),
+  GetPage(
+      name: AppRoute.editNotes,
+      page: () => EditNotePage(),
+      transition: Transition.fade,
+      binding: EditNoteBinding(),
       transitionDuration: const Duration(milliseconds: 700)),
 ];

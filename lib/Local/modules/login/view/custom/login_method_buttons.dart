@@ -16,7 +16,7 @@ class LoginMethodsButton extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: CustomButton(
                 buttonBody: 'With Email',
-                isSelected: controller.loginMythod == 'Email' ? false : true,
+                isSelected: controller.loginMethod == 'Email' ? false : true,
                 hight: 45,
                 onTap: () {
                   controller.changeLoginMethod('Email');
@@ -30,7 +30,7 @@ class LoginMethodsButton extends StatelessWidget {
             child: CustomButton(
                 buttonBody: 'With Number',
                 hight: 45,
-                isSelected: controller.loginMythod == 'Number' ? false : true,
+                isSelected: controller.loginMethod == 'Number' ? false : true,
                 onTap: () {
                   controller.changeLoginMethod('Number');
                 },

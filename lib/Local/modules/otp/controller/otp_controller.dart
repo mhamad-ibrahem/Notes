@@ -20,10 +20,13 @@ class OtpController extends GetxController {
     try {
       await auth.signInWithCredential(phoneAuthCredential);
       Get.offAllNamed(AppRoute.main);
+      statusRequest = StatusRequest.none;
+      update();
     } catch (e) {
+      statusRequest = StatusRequest.failure;
+      update();
       log("$e");
     }
-    statusRequest = StatusRequest.none;
     update();
   }
 }

@@ -12,7 +12,7 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Form(
       key: controller.formKey,
-      child: controller.loginMythod == 'Email'
+      child: controller.loginMethod == 'Email'
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

@@ -3,7 +3,7 @@ enum StatusRequest {
   none,
   loading,
   success,
-  faliure,
+  failure,
   serverFaliure,
   serverException,
   offlineFaliure,

@@ -3,15 +3,20 @@ import 'package:get/get.dart';
 import 'package:notes/Local/modules/home/controller/home_controller.dart';
 import 'package:notes/Local/modules/home/model/notes_model.dart';
 import '../../../../Core/Constant/Colors.dart';
+import '../../../../View/Shared/custom_cached_network_image.dart';
+import '../../../../View/Shared/loading_points.dart';
 
 class NoteBody extends StatelessWidget {
   const NoteBody({
     super.key,
     this.onTap,
     required this.model,
+    this.onDelete,
   });
   final void Function()? onTap;
+  final void Function()? onDelete;
   final NotesModel model;
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
@@ -26,11 +31,20 @@ class NoteBody extends StatelessWidget {
                 Container(
                   height: 110,
                   width: 120,
-                  decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.horizontal(
-                          left: Radius.circular(12)),
-                      image: DecorationImage(
-                          image: NetworkImage(model.image), fit: BoxFit.cover)),
+                  decoration: const BoxDecoration(
+                    borderRadius:
+                        BorderRadius.horizontal(left: Radius.circular(12)),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.horizontal(
+                        left: Radius.circular(12)),
+                    child: CustomCachedNetImage(
+                        imageUrl: model.image,
+                        reDownload: () {
+                          controller.reGetImage();
+                        },
+                        canReDownload: controller.canReGet),
+                  ),
                 ),
                 Expanded(
                     child: Padding(
@@ -62,13 +76,17 @@ class NoteBody extends StatelessWidget {
                             model.date,
                             style: Theme.of(context).textTheme.displaySmall,
                           ),
-                          GestureDetector(
-                            onTap: onTap,
-                            child: const Icon(
-                              Icons.delete_outline_outlined,
-                              color: AppColors.primaryColor,
-                            ),
-                          )
+                          model.isDeleteLoading
+                              ? const LoadingPoint(
+                                  color: AppColors.primaryColor,
+                                )
+                              : GestureDetector(
+                                  onTap: onDelete,
+                                  child: const Icon(
+                                    Icons.delete_outline_outlined,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                )
                         ],
                       )
                     ],

@@ -1,10 +1,15 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hive/hive.dart';
+import 'package:notes/Global/Core/Class/HiveBox.dart';
+import 'package:notes/Global/Core/Class/HiveKeys.dart';
 import 'package:notes/Global/Core/Class/app_toast.dart';
+import 'package:notes/Global/Core/Services/services.dart';
 import 'package:notes/Local/Core/Constant/Routes.dart';
 
 import '../../../../Global/Core/Class/StatusRequest.dart';
@@ -14,7 +19,10 @@ class LoginController extends GetxController {
   TextEditingController password = TextEditingController();
   TextEditingController number = TextEditingController();
   StatusRequest statusRequest = StatusRequest.none;
-  String loginMythod = 'Email';
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  String loginMethod = 'Email';
+  Box authBox = Hive.box(HiveBox.authBox);
   final formKey = GlobalKey<FormState>();
   login() async {
     var formData = formKey.currentState;
@@ -38,22 +46,24 @@ class LoginController extends GetxController {
           statusRequest = StatusRequest.none;
           AppToasts.successToast('Login Success');
           log(credential.user!.uid);
+          authBox.put(HiveKeys.idKey, credential.user!.uid);
+          Services.userId = authBox.get(HiveKeys.idKey);
           update();
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           print('No user found for that email.');
           AppToasts.errorToast('No user found for that email');
-          statusRequest = StatusRequest.faliure;
+          statusRequest = StatusRequest.failure;
           update();
         } else if (e.code == 'wrong-password') {
           print('Wrong password provided for that user.');
           AppToasts.errorToast('Wrong password provided');
-          statusRequest = StatusRequest.faliure;
+          statusRequest = StatusRequest.failure;
           update();
         }
       } catch (e) {
-        print('error catch $e');
+        log('error catch $e');
       }
       update();
     }
@@ -91,7 +101,7 @@ class LoginController extends GetxController {
         verificationCompleted: (PhoneAuthCredential credential) async {},
         codeAutoRetrievalTimeout: (String verificationId) {
           print('offline');
-          statusRequest = StatusRequest.faliure;
+          statusRequest = StatusRequest.failure;
           update();
         },
         codeSent: (String verificationId, int? forceResendingToken) {
@@ -109,7 +119,7 @@ class LoginController extends GetxController {
         },
         verificationFailed: (FirebaseAuthException error) {
           log("$error");
-          statusRequest = StatusRequest.faliure;
+          statusRequest = StatusRequest.failure;
           update();
         },
       );
@@ -118,8 +128,8 @@ class LoginController extends GetxController {
     update();
   }
 
-  changeLoginMethod(String mythod) {
-    loginMythod = mythod;
+  changeLoginMethod(String method) {
+    loginMethod = method;
     update();
   }
 }

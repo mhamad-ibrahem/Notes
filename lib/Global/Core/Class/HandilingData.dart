@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../../../Local/Core/Constant/Colors.dart';
 import 'StatusRequest.dart';
@@ -15,7 +14,7 @@ class HandilingDataView extends StatelessWidget {
             child: CircularProgressIndicator(
             color: AppColors.primaryColor,
           ))
-        : statusRequest == StatusRequest.faliure
+        : statusRequest == StatusRequest.failure
             ? const Center(child: Text("Faliur"))
             : statusRequest == StatusRequest.offlineFaliure
                 ? const Center(child: Text("Offline"))
@@ -33,15 +32,9 @@ class HandilingDataRequest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return statusRequest == StatusRequest.loading
-        ? Center(
-            child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              CircularProgressIndicator(
-                color: AppColors.primaryColor,
-              ),
-            ],
+        ? const Center(
+            child: CircularProgressIndicator(
+            color: AppColors.primaryColor,
           ))
         : child;
   }

@@ -2,11 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:notes/Global/Core/Class/HiveKeys.dart';
 import '../../../firebase_options.dart';
 import '../Class/HiveBox.dart';
 
 class Services extends GetxService {
-  //i use it for intialize all data i need insted of intialize it in the main funcation
+  //i use it for initialized all data i need instead of initialize it in the main function
+  static String userId = '';
   late Box box;
   late final FirebaseApp app;
   late final FirebaseAuth auth;
@@ -16,8 +18,11 @@ class Services extends GetxService {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    if (box.get(HiveKeys.idKey) != null) {
+      userId = box.get(HiveKeys.idKey);
+    }
     // auth = FirebaseAuth.instanceFor(app: app);
-    await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+    // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
     return this;
   }
 }
