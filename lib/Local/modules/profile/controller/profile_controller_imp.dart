@@ -1,16 +1,18 @@
 import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:notes/Global/Core/Class/StatusRequest.dart';
 import 'package:notes/Local/modules/profile/controller/profile_controller.dart';
 import 'package:notes/Local/modules/profile/model/user_model.dart';
+import '../../../../Global/Core/Class/HiveBox.dart';
 import '../../../../Global/Core/Functions/checkInternetConnection.dart';
 import '../../../../Global/Core/Services/services.dart';
+import '../../../Core/Constant/Routes.dart';
 
 class ProfileControllerImplement extends ProfileController {
   @override
   getUserData() async {
-    log(Services.userId);
     statusRequest = StatusRequest.loading;
     update();
     await users.where('id', isEqualTo: Services.userId).get().then((value) {
@@ -18,7 +20,6 @@ class ProfileControllerImplement extends ProfileController {
         userModel = UserModel.fromJson(element.data() as Map<String, dynamic>);
         statusRequest = StatusRequest.none;
         update();
-        log('${userModel.image}');
       });
     }, onError: (error) {
       log('$error');
@@ -26,7 +27,15 @@ class ProfileControllerImplement extends ProfileController {
       update();
       update();
     });
-    // queries.docs.
+  }
+
+  logOut() async {
+    await FirebaseAuth.instance.signOut().then((value) async {
+      await Hive.box(HiveBox.authBox).clear();
+      Services.userId = '';
+      update();
+      Get.offAllNamed(AppRoute.register);
+    });
   }
 
   @override

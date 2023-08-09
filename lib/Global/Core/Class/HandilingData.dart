@@ -16,9 +16,9 @@ class HandilingDataView extends StatelessWidget {
           ))
         : statusRequest == StatusRequest.failure
             ? const Center(child: Text("Faliur"))
-            : statusRequest == StatusRequest.offlineFaliure
+            : statusRequest == StatusRequest.offlineFailure
                 ? const Center(child: Text("Offline"))
-                : statusRequest == StatusRequest.serverFaliure
+                : statusRequest == StatusRequest.serverFailure
                     ? const Center(child: Text("Faliur"))
                     : child;
   }

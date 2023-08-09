@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
+import 'package:notes/Local/modules/chat/model/chat_message_model.dart';
+
+import '../data/static_messages.dart';
 
 class ChatDetsilsController extends GetxController {
   bool isKyboardOpen = false;
@@ -12,6 +15,8 @@ class ChatDetsilsController extends GetxController {
   TextEditingController chatText = TextEditingController();
   FocusNode focusNode = FocusNode();
   late StreamSubscription<bool> keyboardSubscription;
+  List<ChatMessageModel> chatList = chats;
+  // late ScrollController scrollController = ScrollController();
   @override
   void dispose() {
     keyboardSubscription.cancel();
@@ -22,6 +27,8 @@ class ChatDetsilsController extends GetxController {
 
   @override
   void onInit() {
+    // scrollController = ScrollController(
+    //     initialScrollOffset: scrollController.position.maxScrollExtent);
     keyboardSubscription =
         KeyboardVisibilityController().onChange.listen((bool visible) {
       print('Keyboard visibility update. Is visible: $visible');

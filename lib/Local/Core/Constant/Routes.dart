@@ -6,4 +6,5 @@ class AppRoute {
   static const String main = '/main';
   static const String addNotes = '/add_notes';
   static const String editNotes = '/editNotes';
+  static const String helpCenter = '/help_center';
 }

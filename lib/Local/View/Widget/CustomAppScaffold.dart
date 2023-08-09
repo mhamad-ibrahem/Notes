@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../Core/Constant/TextStyles.dart';
-import 'CustomBackButton.dart';
+import 'package:notes/Local/View/Widget/custom_app_bar.dart';
 
 class CustomAppScaffold extends StatelessWidget {
   const CustomAppScaffold(
@@ -15,14 +14,7 @@ class CustomAppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(
-        title: Text(
-          pageTitle,
-          style: appBarStyle(),
-        ),
-        centerTitle: true,
-        leading: isBack ? const CustomBackButton() : null,
-      ),
+      appBar: customAppBar(context: context, title: pageTitle, isBack: isBack),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(

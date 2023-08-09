@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notes/Local/Core/Constant/Colors.dart';
 import 'package:notes/Local/View/Widget/CustomTextFormField.dart';
 import 'package:notes/Local/modules/chat/controller/chat_controller.dart';
 
+import '../../../View/Shared/chat_bubble.dart';
 import 'custom/emoji_picker.dart';
 
 class ChatPage extends StatelessWidget {
@@ -19,8 +21,25 @@ class ChatPage extends StatelessWidget {
           builder: (chatDetsilsController) => Column(
             children: [
               Expanded(
-                child: Column(
-                  children: [],
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                          // controller: chatDetsilsController.scrollController,
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.symmetric(horizontal: 3),
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: chatDetsilsController.chatList.length,
+                          itemBuilder: (context, index) => ChatBubbleSender(
+                                isSender: chatDetsilsController
+                                    .chatList[index].isSender,
+                                message: chatDetsilsController
+                                    .chatList[index].message,
+                                time:
+                                    chatDetsilsController.chatList[index].time,
+                              )),
+                    ],
+                  ),
                 ),
               ),
               CustomTextFormField(
@@ -38,7 +57,11 @@ class ChatPage extends StatelessWidget {
                     // chatDetsilsController.focusNode.requestFocus();
                   },
                   suffixIcon: IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.send))),
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.send,
+                        color: AppColors.primaryColor,
+                      ))),
               const SizedBox(
                 height: 20,
               ),

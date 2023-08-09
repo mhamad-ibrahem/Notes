@@ -60,8 +60,12 @@ dependencies:
   image_picker: ^1.0.2
   cached_network_image: ^3.2.3
   flutter_screenutil: ^5.7.0
+  flutter_chat_bubble: ^2.0.2
   #date format
   intl: ^0.18.1
+  #Url Luncher 
+  url_launcher: ^6.1.10
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

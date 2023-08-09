@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:notes/Local/modules/add_notes/binding/add_notes_notes.dart';
 import 'package:notes/Local/modules/add_notes/view/add_notes_page.dart';
 import 'package:notes/Local/modules/edit_note/view/edit_note.dart';
+import 'package:notes/Local/modules/help_center/binding/help_center_binding.dart';
+import 'package:notes/Local/modules/help_center/view/help_center.dart';
 import 'package:notes/Local/modules/login/binding/login_binding.dart';
 import 'package:notes/Local/modules/login/view/login.dart';
 import 'package:notes/Local/modules/main/view/main_page.dart';
@@ -53,5 +55,11 @@ List<GetPage<dynamic>>? routes = [
       page: () => EditNotePage(),
       transition: Transition.fade,
       binding: EditNoteBinding(),
+      transitionDuration: const Duration(milliseconds: 700)),
+  GetPage(
+      name: AppRoute.helpCenter,
+      page: () => HelpCenter(),
+      transition: Transition.fade,
+      binding: HelpCenterBinding(),
       transitionDuration: const Duration(milliseconds: 700)),
 ];
