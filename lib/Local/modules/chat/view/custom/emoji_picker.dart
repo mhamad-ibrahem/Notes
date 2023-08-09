@@ -4,23 +4,22 @@ import 'package:get/get.dart';
 import 'package:notes/Global/Core/Constant/Colors.dart';
 import 'package:notes/Global/Core/Constant/Size.dart';
 import 'package:notes/Local/Core/Constant/Colors.dart';
-
-import '../../controller/chat_controller.dart';
+import '../../controller/chat_controller_imp.dart';
 
 class EmojiPickerView extends StatelessWidget {
   EmojiPickerView({super.key});
-  final ChatDetsilsController chatDetsilsController = Get.find();
+  final ChatControllerImp chatDetailsController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ChatDetsilsController>(
-      builder: (chatDetsilsController) => SizedBox(
+    return GetBuilder<ChatControllerImp>(
+      builder: (chatDetailsController) => SizedBox(
         height: AppSize.screenHight * 0.3,
         width: double.infinity,
         child: EmojiPicker(
           onEmojiSelected: (category, emoji) {
-            // chatDetsilsController.selectImoji(emoji.emoji);
+            // chatDetailsController.selectEmoji(emoji.emoji);
           },
-          textEditingController: chatDetsilsController.chatText,
+          textEditingController: chatDetailsController.message,
           config: const Config(
             columns:
                 7, // Issue: https://github.com/flutter/flutter/issues/28894

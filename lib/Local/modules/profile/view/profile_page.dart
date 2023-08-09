@@ -20,7 +20,7 @@ class ProfilePage extends StatelessWidget {
         builder: (controller) => HandilingDataView(
           statusRequest: controller.statusRequest,
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
                 const SizedBox(
@@ -30,8 +30,8 @@ class ProfilePage extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 60,
                     backgroundColor: AppColors.primaryColor,
-                    child: (controller.userModel.image != 'null' &&
-                            controller.userModel.image != '')
+                    child: (controller.userModel.image == 'null' &&
+                            controller.userModel.image == '')
                         ? CustomCachedNetImage(
                             imageUrl: controller.userModel.image!,
                             canReDownload: controller.canReGet)

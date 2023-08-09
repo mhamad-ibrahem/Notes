@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:notes/Local/modules/home/controller/home_controller.dart';
 import 'package:notes/Local/modules/home/model/notes_model.dart';
 import '../../../../Core/Constant/Colors.dart';
@@ -73,7 +74,7 @@ class NoteBody extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            model.date,
+                            Jiffy.parse(model.date).fromNow(),
                             style: Theme.of(context).textTheme.displaySmall,
                           ),
                           model.isDeleteLoading

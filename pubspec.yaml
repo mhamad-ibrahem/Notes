@@ -63,6 +63,7 @@ dependencies:
   flutter_chat_bubble: ^2.0.2
   #date format
   intl: ^0.18.1
+  jiffy: ^6.2.1
   #Url Luncher 
   url_launcher: ^6.1.10
 

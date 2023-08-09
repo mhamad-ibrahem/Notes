@@ -85,7 +85,32 @@ class LoginController extends GetxController {
     );
 
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    return await FirebaseAuth.instance
+        .signInWithCredential(credential)
+        .then((value) {
+      log(value.user!.uid);
+      authBox.put(HiveKeys.idKey, value.user!.uid);
+      Services.userId = authBox.get(HiveKeys.idKey);
+
+      users.add(
+        {
+          'id': value.user!.uid,
+          'email': value.user!.email,
+          'name': value.user!.displayName,
+          'number': number.text,
+          'password': password.text,
+          'image': null,
+        },
+      ).then((value) {
+        Get.offAllNamed(AppRoute.main);
+        statusRequest = StatusRequest.none;
+        AppToasts.successToast('Login Success');
+
+        update();
+      }).catchError((e) {
+        AppToasts.errorToast('Fail $e');
+      });
+    });
   }
 
   otpLogin() async {

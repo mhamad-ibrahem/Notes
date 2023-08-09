@@ -8,9 +8,9 @@ class ChatBubbleSender extends StatelessWidget {
       {super.key,
       required this.message,
       required this.isSender,
-      required this.time});
+      required this.name});
   final String message;
-  final String time;
+  final String name;
   final bool isSender;
   @override
   Widget build(BuildContext context) {
@@ -18,9 +18,12 @@ class ChatBubbleSender extends StatelessWidget {
       crossAxisAlignment:
           !isSender ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       children: [
+        const SizedBox(
+          height: 10,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Text('name',
+          child: Text(name,
               style: Theme.of(context)
                   .textTheme
                   .displaySmall!
@@ -57,14 +60,6 @@ class ChatBubbleSender extends StatelessWidget {
         ),
         const SizedBox(
           height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Text(time,
-              style: Theme.of(context)
-                  .textTheme
-                  .displaySmall!
-                  .copyWith(color: GlobalColors.black, fontSize: 16)),
         ),
       ],
     );

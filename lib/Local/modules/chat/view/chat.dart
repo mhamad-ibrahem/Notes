@@ -1,63 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notes/Global/Core/Class/app_toast.dart';
+import 'package:notes/Global/Core/Services/services.dart';
 import 'package:notes/Local/Core/Constant/Colors.dart';
+import 'package:notes/Local/View/Shared/loading_points.dart';
 import 'package:notes/Local/View/Widget/CustomTextFormField.dart';
-import 'package:notes/Local/modules/chat/controller/chat_controller.dart';
-
 import '../../../View/Shared/chat_bubble.dart';
+import '../controller/chat_controller_imp.dart';
 import 'custom/emoji_picker.dart';
 
 class ChatPage extends StatelessWidget {
   ChatPage({super.key});
-  final ChatDetsilsController chatDetsilsController = Get.find();
+  final ChatControllerImp chatDetailsController = Get.find();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        return chatDetsilsController.onCloseApp();
+        return chatDetailsController.onCloseApp();
       },
       child: Scaffold(
-        body: GetBuilder<ChatDetsilsController>(
-          builder: (chatDetsilsController) => Column(
+        body: GetBuilder<ChatControllerImp>(
+          builder: (chatDetailsController) => Column(
             children: [
+              const SizedBox(
+                height: 20,
+              ),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                          // controller: chatDetsilsController.scrollController,
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 3),
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: chatDetsilsController.chatList.length,
-                          itemBuilder: (context, index) => ChatBubbleSender(
-                                isSender: chatDetsilsController
-                                    .chatList[index].isSender,
-                                message: chatDetsilsController
-                                    .chatList[index].message,
-                                time:
-                                    chatDetsilsController.chatList[index].time,
-                              )),
-                    ],
-                  ),
-                ),
+                child: StreamBuilder(
+                    stream: chatDetailsController.chatsCollection
+                        .orderBy('date')
+                        .snapshots(),
+                    builder: ((context, snapshot) {
+                      if (snapshot.hasError) {
+                        AppToasts.errorToast('Error');
+                      }
+                      if (snapshot.hasData) {
+                        chatDetailsController.scrollController =
+                            ScrollController(
+                                initialScrollOffset:
+                                    snapshot.data!.docs.length * 1000.7);
+                        return ListView.builder(
+                            controller: chatDetailsController.scrollController,
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.symmetric(horizontal: 3),
+                            // physics: const NeverScrollableScrollPhysics(),
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) => ChatBubbleSender(
+                                  isSender: snapshot.data!.docs[index]
+                                              ['user_id'] ==
+                                          Services.userId
+                                      ? true
+                                      : false,
+                                  message: snapshot.data!.docs[index]
+                                      ['message'],
+                                  name: snapshot.data!.docs[index]['user_name'],
+                                ));
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        const LoadingPoint(
+                          color: AppColors.primaryColor,
+                        );
+                      }
+                      return const LoadingPoint(
+                        color: AppColors.primaryColor,
+                      );
+                    })),
               ),
               CustomTextFormField(
-                  focusNode: chatDetsilsController.focusNode,
-                  icon: chatDetsilsController.isEmojiVisable == false
+                  focusNode: chatDetailsController.focusNode,
+                  icon: chatDetailsController.isEmojiVisible == false
                       ? Icons.emoji_emotions_outlined
                       : Icons.keyboard_alt_outlined,
                   label: '',
                   hint: 'Type message',
                   obscure: false,
-                  textEditingController: chatDetsilsController.chatText,
+                  textEditingController: chatDetailsController.message,
                   isChat: true,
                   onTap: () {
-                    chatDetsilsController.handelKeyBordState();
-                    // chatDetsilsController.focusNode.requestFocus();
+                    chatDetailsController.handelKeyBoardState();
+                    // chatDetailsController.focusNode.requestFocus();
                   },
                   suffixIcon: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        chatDetailsController.sendMessage();
+                      },
                       icon: const Icon(
                         Icons.send,
                         color: AppColors.primaryColor,
@@ -66,7 +92,7 @@ class ChatPage extends StatelessWidget {
                 height: 20,
               ),
               Offstage(
-                offstage: !chatDetsilsController.isEmojiVisable,
+                offstage: !chatDetailsController.isEmojiVisible,
                 child: EmojiPickerView(),
               )
             ],
